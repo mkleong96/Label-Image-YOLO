@@ -11,7 +11,7 @@ from utils.mainwindow_ui import Ui_Form
 import sys
 from tkinter import Tk
 from tkinter.filedialog import askdirectory, askopenfilename
-import cv2
+# import cv2
 import numpy as np
 
 PATH = os.getcwd()
