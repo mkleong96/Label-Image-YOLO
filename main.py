@@ -342,6 +342,8 @@ class Local_Labelling_Program(QWidget):
 
         self.file_list = os.listdir(self.open_file)
         self.filename = f'{self.open_file}\\{self.text_file_name}'.replace('txt','jpg')
+        self.filename = self.filename.split(os.sep)[-1]
+
         if self.filename in self.file_list:
             try:
                 shutil.copy(self.filename, f'{PATH}\\tempDataSet')
