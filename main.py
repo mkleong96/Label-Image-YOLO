@@ -304,7 +304,9 @@ class Local_Labelling_Program(QWidget):
     #### Save function
     def save_button_callback(self):
         self.index_list = []
+        self.data_list = []
         f = open(self.text_file_name, "w") #### Open text file to write data
+
         for i in range(0, len(self.ui.graphicsView.rect_list)):
             rect = self.ui.graphicsView.rect_list[i].sceneBoundingRect() #### Get rectangles geometry from graphics view
             rect_xcoor = rect.x() + 10 #### Find top left x geometry 
@@ -320,16 +322,17 @@ class Local_Labelling_Program(QWidget):
             self.abs_width = rect_width / self.image_width #### Find absolute width 
             self.abs_height = rect_height / self.image_height #### Find absolute height
             self.ui.listWidget_rectangles.setCurrentRow(i) #### Set list widget focus on current rectangle to get class of rectangle
-
+            
             #### Find index of current rectangle
             for j in range(len(self.classes_list)):
                 if self.ui.listWidget_rectangles.currentItem().text() == self.classes_list[j]:
                     self.class_index = j
                     self.index_list.append(self.class_index)
 
-            f.write("%s %s %s %s %s \n" % (self.class_index, self.abs_x_center, self.abs_y_center, self.abs_width, self.abs_height)) #### Write data to text file
+            self.data_list.append([self.index_list[i], self.abs_x_center, self.abs_y_center, self.abs_width, self.abs_height])
             self.image_dict[f'{self.imagenumber}'] = self.index_list #### Add index to dictionary according to image number 
-
+            f.write(f"{self.index_list[i]} {self.abs_x_center} {self.abs_y_center} {self.abs_width} {self.abs_height} \n") #### Write data to text file
+            
         f.close() #### Close text file
         #### Clear list in dictionary (This dictionary will be used to set value on table widget)
 
@@ -337,8 +340,9 @@ class Local_Labelling_Program(QWidget):
             shutil.copy(f'{self.open_file}\\{self.text_file_name}',f'{PATH}\\tempDataSet')
         except:
             file = open(f'{PATH}\\tempDataSet\\{self.text_file_name}', "w")
-            file.write("%s %s %s %s %s \n" % (self.class_index, self.abs_x_center, self.abs_y_center, self.abs_width, self.abs_height)) #### Write data to text file
-
+            for i in range(0, len(self.data_list)):
+                file.write("%s %s %s %s %s \n" % (self.data_list[i][0], self.data_list[i][1], self.data_list[i][2], self.data_list[i][3], self.data_list[i][4])) #### Write data to text file
+            file.close()
 
         self.file_list = os.listdir(self.open_file)
         self.filename = f'{self.open_file}\\{self.text_file_name}'.replace('txt','jpg')
