@@ -376,14 +376,13 @@ class Local_Labelling_Program(QWidget):
         #         pass
         #         print('SameFileError')
 
-
-        for s in range(0, 11):
+        for s in range(len(self.classes_list)):
             self.classes_dict[f'{s}'].clear()
         #### Read data from 'self.image_dict' and get all data in it to add to 'self.classes_dict'
         #### So 'self.classes_dict' will have all the labelled classes
         for i in range(0, len(self.image_dict)):
             for k in range(0, len(self.image_dict[f'{i}'])):
-                for j in range(0, 11):
+                for j in range(len(self.classes_list)):
                     if self.image_dict[f'{i}'][k] == j:
                         self.classes_dict[f'{j}'].append(self.image_dict[f'{i}'][k])
         #### Calculate the length of list to set table widget
